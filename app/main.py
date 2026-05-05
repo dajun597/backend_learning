@@ -1,9 +1,8 @@
 from fastapi import FastAPI, HTTPException
 
-from app.schemas import LTVrequest, LTVresponse
+from app.schemas import LTVrequest, LTVresponse, updateLTV
 from app.service import calculate_ltv
-from app.database import init_db, get_application, list_application
-
+from app.database import init_db, get_application, list_application, update_application,delete_application
 
 app = FastAPI(
     title="Home Mortgage Review API",
@@ -45,6 +44,39 @@ def get_application_id(application_id: str):
             status_code=404,
             detail="Application not found"
         )
-
     return application
+
+@app.patch('/applications/{application_id}',response_model=LTVresponse)
+def patch_application(
+        application_id:str,
+        request:updateLTV,
+):
+    updated_application_status=update_application(
+        application_id=application_id,
+        status=request.status,
+        decision=request.decision
+    )
+
+    if updated_application_status is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Application not found"
+        )
+
+    return updated_application_status
+
+@app.delete("/applications/{application_id}")
+def delete_application_endpoint(application_id: str):
+    deleted = delete_application(application_id)
+
+    if deleted is False:
+        raise HTTPException(
+            status_code=404,
+            detail="Application not found"
+        )
+
+    return {
+        "message": "Application deleted successfully",
+        "application_id": application_id
+    }
 

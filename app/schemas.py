@@ -1,3 +1,5 @@
+from typing import Literal, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -21,3 +23,14 @@ class LTVresponse(BaseModel):
     decision: str
     status: str
     created_at: str
+
+class updateLTV(BaseModel):
+    application_id:str
+    status:Literal[
+        "PENDING_REVIEW",
+        "MANUAL_REVIEW_REQUIRED",
+        "APPROVED",
+        "DECLINED"
+    ]
+    decision: Optional[str]=None
+

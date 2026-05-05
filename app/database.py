@@ -99,5 +99,45 @@ def list_application(limit:int)->list:
     conn.close()
     return [dict(row) for row in rows]
 
+def update_application(
+        application_id:str,
+        status:str,
+        decision:Optional[str]=None)->int:
+
+    conn = connect()
+    cursor = conn.cursor()
+
+    if decision is None:
+        cursor.execute("""
+        update loan_application
+        set status=?,
+        where application_id=?,
+        """,(status,application_id))
+    else:
+        cursor.execute("""
+        update loan_application
+        set status=?,decision=?
+        where application_id=?
+        """,(status,decision,application_id))
+
+    conn.commit()
+    update_row=cursor.rowcount()
+    conn.close()
+    return update_row
+
+def delete_application(application_id:str)->None:
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("""
+    delete from loan_application
+    where application_id=?
+    """,(application_id,))
+
+    delete_row=cursor.rowcount
+    conn.commit()
+    conn.close()
+    return delete_row
+
+
 
 
