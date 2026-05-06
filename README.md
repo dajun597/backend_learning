@@ -1,23 +1,26 @@
-# Home Mortgage Review Backend API
+# Home Mortgage Review API
 
-A FastAPI backend project for processing home mortgage / loan applications.  
-The API calculates Loan-to-Value (LTV), assigns a risk level, stores application records in a SQLite database, and supports basic CRUD operations.
+A lightweight backend API for mortgage application review, built with **FastAPI** and **SQLite**.
+
+The system allows users to submit a loan application, calculate the Loan-to-Value ratio, store application records in a database, retrieve existing applications, update review decisions, and delete applications.
 
 ---
 
 ## Project Overview
 
-This project is a small backend service designed to demonstrate:
+This project is a small backend service designed to simulate a mortgage review workflow.
 
-- FastAPI API development
-- Pydantic request and response validation
-- SQLite database integration
-- CRUD operations
-- Basic risk decision logic
-- REST API design
-- Swagger documentation for API testing
+The API supports:
 
-The backend allows users to create a loan application, calculate the LTV, save the result to a database, retrieve applications, update application status, and delete records.
+- Health check endpoint
+- Loan-to-Value calculation
+- Application creation
+- SQLite database persistence
+- Application listing
+- Single application lookup
+- Application status update
+- Application deletion
+- Automated testing with pytest
 
 ---
 
@@ -25,20 +28,28 @@ The backend allows users to create a loan application, calculate the LTV, save t
 
 - Python
 - FastAPI
-- Pydantic
 - SQLite
+- Pydantic
+- pytest
 - Uvicorn
-- Git / GitHub
 
 ---
 
 ## Project Structure
 
 ```text
-app/
+HM_backend/
 │
-├── main.py          # FastAPI application and API endpoints
-├── schemas.py       # Pydantic request and response models
-├── service.py       # Business logic for LTV calculation and risk decision
-├── database.py      # SQLite database connection and CRUD functions
-└── loan_application.db   # Local SQLite database file, generated automatically
+├── app/
+│   ├── __init__.py
+│   ├── main.py          # FastAPI routes and application entry point
+│   ├── schemas.py       # Pydantic request and response models
+│   ├── service.py       # Business logic for LTV calculation
+│   └── database.py      # SQLite database connection and CRUD functions
+│
+├── test_main/
+│   └── test_main.py     # API tests
+│
+├── pytest.ini           # pytest configuration
+├── requirements.txt     # Python dependencies
+└── README.md
